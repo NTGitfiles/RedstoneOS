@@ -25,7 +25,7 @@ while (($#)); do
   shift
 done
 [[ -d "$GROUP_DIR" ]] || { echo "Package groups not found: $GROUP_DIR" >&2; exit 1; }
-if (("${#groups[@]}" == 0)); then
+if ((${#groups[@]} == 0)); then
   if [[ "$mode" == list ]]; then
     printf 'Available groups:\n'
     for file in "$GROUP_DIR"/*.packages; do basename "$file" .packages; done
@@ -71,8 +71,8 @@ for group in "${groups[@]}"; do
 done
 printf '\nAvailable official-repository packages (%d):\n' "${#available[@]}"
 printf '  %s\n' "${available[@]:-none}"
-if (("${#unavailable[@]}")); then
-  printf '\nUnavailable in configured repositories (%d), skipped:\n' "${#unavailable[@]}"
+if ((${#unavailable[@]})); then
+  printf '\nUnavailable in configured repositories (%d), skipped:\n' ${#unavailable[@]}
   printf '  %s\n' "${unavailable[@]}"
   printf 'Some may require a reviewed Flatpak or AUR source. Nothing was sourced automatically.\n'
 fi
