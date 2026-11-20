@@ -8,8 +8,9 @@ Usage: scripts/install-redstone-extras.sh [--list | --dry-run | GROUP ...]
 Installs only packages available in configured official pacman repositories.
 Missing/AUR-only names are reported and skipped. No third-party repository,
 AUR helper, bootloader, or proprietary driver is installed automatically.
-Groups: gaming development productivity multimedia terminal system networking
-        security creative iot fonts peripherals virtualisation
+Groups: browser gaming development productivity multimedia terminal system networking
+        security creative iot fonts peripherals virtualisation appearance diagnostics
+        accessibility communication desktop-utilities backup-recovery arm64-compatibility
         hardware-intel-cpu hardware-intel-gpu hardware-amd-cpu hardware-amd-gpu hardware-nvidia
 EOF
 }
@@ -40,6 +41,8 @@ declare -a unavailable=()
 declare -A seen=()
 for group in "${groups[@]}"; do
   case "$group" in
+    arm64-compatibility)
+      [[ "$(uname -m)" == aarch64 ]] || { echo "FEX group is ARM64-only; refusing on $(uname -m)." >&2; exit 2; } ;;
     hardware-intel-cpu)
       grep -q 'GenuineIntel' /proc/cpuinfo || { echo "Intel CPU not detected; refusing $group." >&2; exit 2; } ;;
     hardware-amd-cpu)
