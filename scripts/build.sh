@@ -26,6 +26,17 @@ mkdir -p "$SOURCE_DIR" "$OUTPUT_DIR"
 # Populate pinned upstream source gitlinks recorded in this repository.
 git -C "$ROOT_DIR" submodule update --init --recursive
 
+# The generated theme lives inside the Omarchy source tree so the upstream
+# ISO builder packages it. Remove only our own previous generated output
+# before checking the submodule for unrelated local modifications.
+GENERATED_THEME_DIR="$SOURCE_DIR/omarchy/themes/redstone"
+remove_generated_theme() {
+  if [[ -f "$GENERATED_THEME_DIR/.redstone-generated" ]]; then
+    info "Removing previous generated Redstone theme"
+    rm -rf -- "$GENERATED_THEME_DIR"
+  fi
+}
+
 # Undo only exact patches maintained in this repository. Any unrelated local
 # modifications remain untouched and are rejected by the clean-tree check.
 unapply_patches() {
@@ -49,6 +60,9 @@ sync_repo() {
     info "Cloning $name"
     git clone "$url" "$destination"
   else
+    if [[ "$name" == "omarchy" ]]; then
+      remove_generated_theme
+    fi
     unapply_patches "$destination" "$ROOT_DIR/patches/$name"
     if [[ -n "$(git -C "$destination" status --porcelain)" ]]; then
       die "$name has uncommitted changes unrelated to cleanly reversible Redstone patches: $destination"
@@ -64,6 +78,120 @@ sync_repo() {
 sync_repo omarchy "$OMARCHY_URL" "$OMARCHY_REF" "$SOURCE_DIR/omarchy"
 sync_repo packages "$PKGS_URL" "$PKGS_REF" "$SOURCE_DIR/omarchy-pkgs"
 sync_repo iso "$ISO_URL" "$ISO_REF" "$SOURCE_DIR/omarchy-iso"
+
+generate_redstone_theme() {
+  local theme_dir="$GENERATED_THEME_DIR"
+  local backgrounds_dir="$theme_dir/backgrounds"
+  local wallpaper_svg="$backgrounds_dir/redstone.svg"
+  local wallpaper_png="$backgrounds_dir/redstone.png"
+  local renderer=""
+
+  if command -v magick >/dev/null 2>&1; then
+    renderer="magick"
+  elif command -v convert >/dev/null 2>&1; then
+    renderer="convert"
+  else
+    die "The Redstone theme generator needs ImageMagick (install the imagemagick package)."
+  fi
+
+  if [[ -e "$theme_dir" ]]; then
+    [[ -f "$theme_dir/.redstone-generated" ]] || die "Refusing to overwrite an existing upstream theme: $theme_dir"
+    rm -rf -- "$theme_dir"
+  fi
+
+  info "Generating RedstoneOS theme and 2560x1440 wallpaper"
+  mkdir -p "$backgrounds_dir"
+  : > "$theme_dir/.redstone-generated"
+
+  cat > "$theme_dir/colors.toml" <<'TOML'
+mode = "dark"
+
+accent = "#e34b3f"
+selection = "#492522"
+muted = "#8c5149"
+
+background = "#171416"
+dark_background = "#100e10"
+darker_background = "#090809"
+lighter_background = "#292326"
+
+foreground = "#eee6e2"
+dark_foreground = "#9c8c87"
+light_foreground = "#f5eeeb"
+bright_foreground = "#fff8f4"
+
+red = "#e34b3f"
+yellow = "#f2b45f"
+orange = "#ed794d"
+green = "#9dbb78"
+cyan = "#76b7b2"
+blue = "#7898c8"
+magenta = "#c18ab4"
+brown = "#8b5545"
+
+bright_red = "#ff6658"
+bright_yellow = "#ffd080"
+bright_green = "#b5d98b"
+bright_cyan = "#91d4ce"
+bright_blue = "#91b4e8"
+bright_magenta = "#e0a4d2"
+TOML
+
+  cat > "$wallpaper_svg" <<'SVG'
+<svg xmlns="http://www.w3.org/2000/svg" width="2560" height="1440" viewBox="0 0 2560 1440">
+  <defs>
+    <linearGradient id="base" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#292124"/>
+      <stop offset="0.52" stop-color="#171416"/>
+      <stop offset="1" stop-color="#090809"/>
+    </linearGradient>
+    <linearGradient id="stone" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#f06a50"/>
+      <stop offset="1" stop-color="#8f2928"/>
+    </linearGradient>
+    <radialGradient id="glow">
+      <stop offset="0" stop-color="#e34b3f" stop-opacity=".32"/>
+      <stop offset="1" stop-color="#e34b3f" stop-opacity="0"/>
+    </radialGradient>
+    <pattern id="grid" width="96" height="96" patternUnits="userSpaceOnUse">
+      <path d="M96 0H0V96" fill="none" stroke="#f5eeeb" stroke-opacity=".035" stroke-width="2"/>
+    </pattern>
+  </defs>
+  <rect width="2560" height="1440" fill="url(#base)"/>
+  <rect width="2560" height="1440" fill="url(#grid)"/>
+  <ellipse cx="1280" cy="720" rx="850" ry="650" fill="url(#glow)"/>
+  <g transform="translate(1280 690)">
+    <path d="M0-390 338-195 338 195 0 390-338 195-338-195Z" fill="none" stroke="#e34b3f" stroke-opacity=".22" stroke-width="5"/>
+    <path d="M0-300 260-150 260 150 0 300-260 150-260-150Z" fill="#171416" stroke="#6f3431" stroke-width="8"/>
+    <path d="M0-235 204-117 204 117 0 235-204 117-204-117Z" fill="url(#stone)"/>
+    <path d="M0-235 204-117 0 0-204-117Z" fill="#ff8a69" fill-opacity=".9"/>
+    <path d="M-204-117 0 0V235L-204 117Z" fill="#9d302c"/>
+    <path d="M204-117 0 0V235L204 117Z" fill="#6f2425"/>
+    <path d="M0-126 110-63 110 63 0 126-110 63-110-63Z" fill="#171416" stroke="#ffc18a" stroke-width="7"/>
+    <path d="M0-72 62-36 62 36 0 72-62 36-62-36Z" fill="#e34b3f"/>
+  </g>
+  <g fill="#f5eeeb" fill-opacity=".68" font-family="sans-serif" text-anchor="middle">
+    <text x="1280" y="1190" font-size="62" letter-spacing="22">REDSTONE</text>
+    <text x="1280" y="1250" font-size="22" letter-spacing="10" fill-opacity=".42">BUILT ON OPEN SOURCE</text>
+  </g>
+  <path d="M930 1300H1630" stroke="#e34b3f" stroke-opacity=".55" stroke-width="3"/>
+</svg>
+SVG
+
+  if [[ "$renderer" == "magick" ]]; then
+    magick "$wallpaper_svg" -resize '2560x1440!' "$wallpaper_png"
+    magick "$wallpaper_png" -resize '960x540!' "$theme_dir/preview.png"
+  else
+    convert "$wallpaper_svg" -resize '2560x1440!' "$wallpaper_png"
+    convert "$wallpaper_png" -resize '960x540!' "$theme_dir/preview.png"
+  fi
+
+  [[ -s "$wallpaper_png" && -s "$theme_dir/preview.png" ]] || die "Theme wallpaper generation failed."
+  printf 'Generated theme: %s\n' "$theme_dir"
+  printf 'Generated wallpaper: %s\n' "$wallpaper_png"
+}
+
+generate_redstone_theme
 
 apply_patches() {
   local name="$1" repository="$2" patch_folder="$3"
