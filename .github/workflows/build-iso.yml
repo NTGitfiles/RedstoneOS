@@ -35,11 +35,12 @@ jobs:
           sudo apt-get update
           sudo apt-get install --yes imagemagick librsvg2-bin ffmpeg
 
-      - name: Build ISO using the runner Docker daemon
+      - name: Build ISO and export generated branding
         shell: bash
         run: |
           set -Eeuo pipefail
           bash scripts/build.sh
+          bash scripts/export-branding-assets.sh
           mkdir -p output
           mapfile -t isos < <(find . -type f -name "*.iso" -not -path "./.git/*" -not -path "./output/*" -print)
           if (( ${#isos[@]} == 0 )); then
@@ -62,4 +63,13 @@ jobs:
             output/SHA256SUMS
           if-no-files-found: error
           compression-level: 0
+          retention-days: 14
+
+      - name: Upload desktop, intro and Pixel 7a wallpapers
+        uses: actions/upload-artifact@v4
+        with:
+          name: redstone-os-branding-${{ github.sha }}
+          path: output/branding/
+          if-no-files-found: error
+          compression-level: 6
           retention-days: 14
