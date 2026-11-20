@@ -1,0 +1,68 @@
+name: Build Redstone OS ISO
+
+on:
+  push:
+    branches:
+      - redstone/bootstrap
+  pull_request:
+    branches:
+      - main
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: redstone-iso-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build-iso:
+    name: Build x86_64 ISO
+    runs-on: ubuntu-latest
+    timeout-minutes: 360
+
+    steps:
+      - name: Check out Redstone OS and pinned submodules
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+          submodules: recursive
+          fetch-depth: 0
+
+      - name: Build inside a privileged Arch Linux container
+        shell: bash
+        run: |
+          set -Eeuo pipefail
+          docker pull archlinux:base-devel
+          docker run --rm --privileged \
+            -v "${GITHUB_WORKSPACE}:/workspace" \
+            -w /workspace \
+            archlinux:base-devel \
+            bash -Eeuo pipefail -c '
+              pacman -Syu --needed --noconfirm git imagemagick archiso
+              bash scripts/build.sh
+              mkdir -p output
+              mapfile -t isos < <(find . -type f -name "*.iso" -not -path "./.git/*" -not -path "./output/*" -print)
+              if (( ${#isos[@]} == 0 )); then
+                echo "ERROR: ISO builder completed without producing an ISO file." >&2
+                exit 1
+              fi
+              for iso in "${isos[@]}"; do
+                cp -- "$iso" output/
+              done
+              cd output
+              sha256sum *.iso > SHA256SUMS
+              ls -lh
+            '
+
+      - name: Upload ISO and checksums
+        uses: actions/upload-artifact@v4
+        with:
+          name: redstone-os-iso-${{ github.sha }}
+          path: |
+            output/*.iso
+            output/SHA256SUMS
+          if-no-files-found: error
+          compression-level: 0
+          retention-days: 14
