@@ -49,7 +49,7 @@ SVG
 # Animated six-second theme intro using the same generated desktop artwork.
 ffmpeg -hide_banner -loglevel error -y -loop 1 -framerate 30 \
   -i "$OUT/redstone-desktop-2560x1440.png" \
-  -vf "scale=1920:1080:force_original_aspect_ratio=increase,crop=1920:1080,zoompan=z='1+0.045*(0.5-0.5*cos(2*PI*on/180))':x='iw/2-(iw/zoom/2)':y='ih/2-(ih/zoom/2)':d=1:s=1920x1080:fps=30,fade=t=in:st=0:d=.7,fade=t=out:st=5.3:d=.7,format=yuv420p" \
+  -vf "scale=1920:1080:force_original_aspect_ratio=increase,crop=1920:1080,zoompan=z='1+0.045*(0.5-0.5*cos(2*PI*on/180))':x='iw/2-(iw/zoom/2)':y='ih/2-(ih/zoom/2)':d=1:s=1920x1080:fps=30,fade=t=in:st=0:d=0.7,fade=t=out:st=5.3:d=0.7,format=yuv420p" \
   -t 6 -an -c:v libx264 -preset veryfast -crf 20 -movflags +faststart \
   "$OUT/redstone-theme-intro-6s.mp4"
 
