@@ -41,6 +41,7 @@ jobs:
             archlinux:base-devel \
             bash -Eeuo pipefail -c '
               pacman -Syu --needed --noconfirm git imagemagick archiso
+              git config --global --add safe.directory /workspace
               bash scripts/build.sh
               mkdir -p output
               mapfile -t isos < <(find . -type f -name "*.iso" -not -path "./.git/*" -not -path "./output/*" -print)
