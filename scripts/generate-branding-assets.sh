@@ -92,8 +92,8 @@ SVG
 # Manim renders the animated intro from the same visual language.
 manim --renderer=cairo -ql --fps 30 -r 1920,1080 \
   "$ROOT_DIR/scripts/redstone-intro.py" RedstoneBootIntro
-RENDERED="$ROOT_DIR/media/videos/redstone-intro/480p30/RedstoneBootIntro.mp4"
-if [[ ! -s "$RENDERED" ]]; then
+RENDERED="$(find "$ROOT_DIR/media/videos" -type f -name "RedstoneBootIntro.mp4" -print -quit)"
+if [[ -z "$RENDERED" || ! -s "$RENDERED" ]]; then
   echo "Manim did not produce the expected intro video: $RENDERED" >&2
   find "$ROOT_DIR/media/videos" -type f -name '*.mp4' -print >&2 || true
   exit 1
