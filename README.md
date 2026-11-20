@@ -6,11 +6,11 @@ The initial build system keeps upstream source checkouts separate from Redstone-
 
 ## Upstream
 
-- [Omarchy](https://github.com/omacom/omarchy) — branch: `quattro`
-- [Omarchy Packages](https://github.com/omacom/omarchy-pkgs) — branch: `master`
-- [Omarchy ISO](https://github.com/omacom/omarchy-iso) — branch: `quattro`
+- [Omarchy](https://github.com/omacom/omarchy) — release tag: `v4.5.0`
+- [Omarchy Packages](https://github.com/omacom/omarchy-pkgs) — release commit: `9043460`
+- [Omarchy ISO](https://github.com/omacom/omarchy-iso) — release-window commit: `d5136a6`
 
-The defaults track those branches. Set the corresponding `REDSTONE_*_REF` environment variables to select a tag or commit for a reproducible build.
+All three sources are pinned to immutable commit IDs in the submodule entries and `source/UPSTREAMS.lock`. Set the corresponding `REDSTONE_*_REF` environment variables only when intentionally testing a different source revision.
 
 ## Quick start
 
@@ -22,7 +22,7 @@ cd RedstoneOS
 bash scripts/build.sh
 ```
 
-The official Omarchy 4.5.0 source, its matching package repository snapshot, and the ISO builder snapshot are tracked as pinned Git submodules under `source/`. The build script initialises those submodules, verifies the pinned revisions, applies Redstone-maintained patches, then invokes Omarchy ISO's own build entry point using the local source checkouts.
+The official Omarchy 4.5.0 source, its matching package repository snapshot, and the ISO builder snapshot are tracked as pinned Git submodules under `source/`. The build script initialises those submodules, checks out the pinned revisions, applies Redstone-maintained patches, then invokes Omarchy ISO's own build entry point using the local source checkouts.
 
 Use `git clone --recurse-submodules` to fetch all source code in one go. A normal clone also works because the build script initialises the submodules.
 
