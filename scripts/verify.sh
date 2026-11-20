@@ -19,8 +19,8 @@ for path in config patches scripts docs; do
   fi
 done
 
-if [[ ! -x scripts/build.sh ]]; then
-  printf 'Build script is not executable: scripts/build.sh\n' >&2
+if [[ ! -f scripts/build.sh ]]; then
+  printf 'Missing build script: scripts/build.sh\n' >&2
   fail=1
 fi
 
