@@ -57,7 +57,7 @@ cat > "$OUT/redstone-desktop.svg" <<'SVG'
 <!-- Redstone torch -->
 <g transform="translate(1280 185)"><rect x="-20" y="40" width="40" height="130" fill="#9c593d"/><rect x="-34" y="0" width="68" height="62" fill="#f04b3e"/><rect x="-16" y="15" width="32" height="30" fill="#ffc06b"/></g>
 <g fill="#f6eee8" text-anchor="middle" font-family="DejaVu Sans Mono,monospace">
- <text x="1280" y="1260" font-size="76" font-weight="bold" letter-spacing="18">REDSTONE OS</text>
+ <text x="1280" y="1260" font-size="76" font-weight="bold" textLength="850" lengthAdjust="spacingAndGlyphs">REDSTONE OS</text>
  <text x="1280" y="1320" font-size="25" letter-spacing="10" fill="#ff9272">POWERED BY REDSTONE</text>
 </g>
 </svg>
@@ -84,7 +84,7 @@ cat > "$OUT/redstone-pixel-7a.svg" <<'SVG'
  <path d="M0-43 38-21V21L0 43-38 21V-21Z" fill="#ff543d"/>
 </g>
 <g transform="translate(540 680)"><rect x="-17" y="35" width="34" height="110" fill="#9c593d"/><rect x="-30" y="0" width="60" height="55" fill="#f04b3e"/><rect x="-14" y="13" width="28" height="27" fill="#ffc06b"/></g>
-<g fill="#f6eee8" text-anchor="middle" font-family="DejaVu Sans Mono,monospace"><text x="540" y="1940" font-size="58" font-weight="bold" letter-spacing="7">REDSTONE OS</text><text x="540" y="2010" font-size="23" letter-spacing="5" fill="#ff9272">POWERED BY REDSTONE</text></g>
+<g fill="#f6eee8" text-anchor="middle" font-family="DejaVu Sans Mono,monospace"><text x="540" y="1940" font-size="58" font-weight="bold" textLength="620" lengthAdjust="spacingAndGlyphs">REDSTONE OS</text><text x="540" y="2010" font-size="23" letter-spacing="5" fill="#ff9272">POWERED BY REDSTONE</text></g>
 </svg>
 SVG
 "$IM" "$OUT/redstone-pixel-7a.svg" -strip "$OUT/redstone-pixel-7a-1080x2400.png"
