@@ -9,9 +9,9 @@ OMARCHY_URL="${REDSTONE_OMARCHY_URL:-https://github.com/omacom/omarchy.git}"
 PKGS_URL="${REDSTONE_PKGS_URL:-https://github.com/omacom/omarchy-pkgs.git}"
 ISO_URL="${REDSTONE_ISO_URL:-https://github.com/omacom/omarchy-iso.git}"
 
-OMARCHY_REF="${REDSTONE_OMARCHY_REF:-quattro}"
-PKGS_REF="${REDSTONE_PKGS_REF:-master}"
-ISO_REF="${REDSTONE_ISO_REF:-quattro}"
+OMARCHY_REF="${REDSTONE_OMARCHY_REF:-ac2690cd7be4f47e4a255f5e2e78d904d436b068}"
+PKGS_REF="${REDSTONE_PKGS_REF:-9043460ca583d8f012c75f2321bfc0f39cb3649e}"
+ISO_REF="${REDSTONE_ISO_REF:-d5136a69782c00fe8d53fc98e4f3a990447d4840}"
 
 die() { printf 'ERROR: %s\n' "$*" >&2; exit 1; }
 info() { printf '\n==> %s\n' "$*"; }
@@ -22,6 +22,9 @@ done
 
 [[ "$(uname -m)" == "x86_64" ]] || die "This initial build wrapper currently targets x86_64 hosts."
 mkdir -p "$SOURCE_DIR" "$OUTPUT_DIR"
+
+# Populate pinned upstream source gitlinks recorded in this repository.
+git -C "$ROOT_DIR" submodule update --init --recursive
 
 # Undo only exact patches maintained in this repository. Any unrelated local
 # modifications remain untouched and are rejected by the clean-tree check.
@@ -41,7 +44,7 @@ unapply_patches() {
 
 sync_repo() {
   local name="$1" url="$2" ref="$3" destination="$4"
-  if [[ ! -d "$destination/.git" ]]; then
+  if ! git -C "$destination" rev-parse --is-inside-work-tree >/dev/null 2>&1; then
     info "Cloning $name"
     git clone "$url" "$destination"
   else
