@@ -1,0 +1,40 @@
+name: Generate Redstone Branding
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - redstone/bootstrap
+    paths:
+      - "scripts/generate-branding-assets.sh"
+      - ".github/workflows/generate-branding.yml"
+
+permissions:
+  contents: read
+
+concurrency:
+  group: redstone-branding-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  generate-branding:
+    name: Generate wallpapers and theme intro
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - name: Check out Redstone OS
+        uses: actions/checkout@v4
+      - name: Install rendering tools
+        run: |
+          sudo apt-get update
+          sudo apt-get install --yes imagemagick ffmpeg
+      - name: Generate all branding assets
+        run: bash scripts/generate-branding-assets.sh
+      - name: Upload branding pack
+        uses: actions/upload-artifact@v4
+        with:
+          name: redstone-branding-${{ github.sha }}
+          path: output/branding/
+          if-no-files-found: error
+          compression-level: 6
+          retention-days: 30
