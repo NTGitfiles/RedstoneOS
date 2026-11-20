@@ -30,7 +30,8 @@ git -C "$ROOT_DIR" submodule update --init --recursive
 # modifications remain untouched and are rejected by the clean-tree check.
 unapply_patches() {
   local repository="$1" patch_folder="$2"
-  [[ -d "$repository/.git" && -d "$patch_folder" ]] || return 0
+  git -C "$repository" rev-parse --is-inside-work-tree >/dev/null 2>&1 || return 0
+  [[ -d "$patch_folder" ]] || return 0
   shopt -s nullglob
   local patches=("$patch_folder"/*.patch)
   shopt -u nullglob
