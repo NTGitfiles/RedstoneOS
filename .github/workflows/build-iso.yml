@@ -7,20 +7,32 @@ on:
   pull_request:
     branches:
       - main
+      - redstone/bootstrap
   workflow_dispatch:
+    inputs:
+      arch:
+        description: ISO target architecture
+        type: choice
+        required: true
+        default: x86_64
+        options:
+          - x86_64
+          - aarch64
 
 permissions:
   contents: read
 
 concurrency:
-  group: redstone-iso-${{ github.ref }}
+  group: redstone-iso-${{ github.ref }}-${{ inputs.arch || 'x86_64' }}
   cancel-in-progress: true
 
 jobs:
   build-iso:
-    name: Build x86_64 ISO
+    name: Build ${{ inputs.arch || 'x86_64' }} ISO
     runs-on: ubuntu-latest
     timeout-minutes: 360
+    env:
+      REDSTONE_ARCH: ${{ inputs.arch || 'x86_64' }}
 
     steps:
       - name: Check out Redstone OS and pinned submodules
@@ -30,10 +42,17 @@ jobs:
           submodules: recursive
           fetch-depth: 0
 
+      - name: Enable ARM64 emulation when requested
+        if: env.REDSTONE_ARCH == 'aarch64'
+        run: docker run --privileged --rm tonistiigi/binfmt --install arm64
+
       - name: Install host-side theme rendering tools
         run: |
           sudo apt-get update
           sudo apt-get install --yes imagemagick librsvg2-bin ffmpeg
+
+      - name: Verify Redstone configuration and scripts
+        run: bash scripts/verify.sh
 
       - name: Build ISO and export generated branding
         shell: bash
@@ -57,7 +76,7 @@ jobs:
       - name: Upload ISO and checksums
         uses: actions/upload-artifact@v4
         with:
-          name: redstone-os-iso-${{ github.sha }}
+          name: redstone-os-iso-${{ github.sha }}-${{ env.REDSTONE_ARCH }}
           path: |
             output/*.iso
             output/SHA256SUMS
