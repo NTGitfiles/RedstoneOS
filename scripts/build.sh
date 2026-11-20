@@ -192,9 +192,9 @@ SVG
 
   info "Rendering six-second Redstone theme intro for Omarchy 4.5"
   mkdir -p "$intro_dir"
-  ffmpeg -hide_banner -loglevel error -y \\
-    -loop 1 -framerate 30 -i "$wallpaper_png" \\
-    -vf "scale=1920:1080:force_original_aspect_ratio=increase,crop=1920:1080,zoompan=z='1+0.035*(0.5-0.5*cos(2*PI*on/180))':x='iw/2-(iw/zoom/2)':y='ih/2-(ih/zoom/2)':d=1:s=1920x1080:fps=30,eq=brightness='0.015*sin(2*PI*t/3)':eval=frame,fade=t=in:st=0:d=0.8,fade=t=out:st=5.4:d=0.6,format=yuv420p" \\
+  ffmpeg -hide_banner -loglevel error -y \
+    -loop 1 -framerate 30 -i "$wallpaper_png" \
+    -vf "scale=1920:1080:force_original_aspect_ratio=increase,crop=1920:1080,zoompan=z='1+0.035*(0.5-0.5*cos(2*PI*on/180))':x='iw/2-(iw/zoom/2)':y='ih/2-(ih/zoom/2)':d=1:s=1920x1080:fps=30,eq=brightness='0.015*sin(2*PI*t/3)':eval=frame,fade=t=in:st=0:d=0.8,fade=t=out:st=5.4:d=0.6,format=yuv420p" \
     -t 6 -an -c:v libx264 -preset veryfast -crf 20 -movflags +faststart "$intro_video"
 
   [[ -s "$intro_video" ]] || die "Redstone theme intro generation failed."
