@@ -1,19 +1,13 @@
-# Installer design
+# Installer and first boot
 
-The installer is a planned Redstone-owned experience. The current ISO wrapper does not implement an installer UI or partition disks.
+Redstone inherits the Omarchy ISO installer rather than replacing it with a second disk-writing installer. The pinned upstream ISO provides a configurator, writes a pre-built Btrfs root image to the selected target, grows the filesystem, applies per-machine packages and provisions the user. This avoids maintaining a competing destructive disk tool.
 
-Required flow:
-1. Welcome screen and release/hardware summary.
-2. Keyboard layout and locale.
-3. Network check and optional Wi-Fi setup.
-4. Disk discovery with explicit target confirmation.
-5. Partitioning choices, including erase/install and manual layout.
-6. Btrfs layout and optional full-disk encryption.
-7. Bootloader setup, with Secure Boot status clearly explained.
-8. User account creation and administrator policy.
-9. Timezone and clock configuration.
-10. Package installation with visible progress and useful logs.
-11. Install completion, reboot prompt and first-boot handoff.
+Redstone-specific work still required:
+- Brand the live session, configurator and installation screens.
+- Verify the exact destructive disk confirmation and encryption flows against the pinned upstream revision.
+- Add Redstone's optional software selection without making the base install enormous.
+- Run a first-boot handoff for the hardware report and optional package groups.
+- Test BIOS/UEFI and Btrfs/encryption paths in disposable virtual machines.
 
 Safety requirements:
 - Never select or format a disk without explicit user confirmation.
@@ -22,4 +16,4 @@ Safety requirements:
 - Keep encryption recovery guidance visible and never log secrets.
 - Test BIOS/UEFI, NVMe/SATA, Btrfs, encrypted and multi-disk scenarios in virtual machines first.
 
-Status: design specification only. No disk-writing installer is implemented.
+Status: upstream installer is inherited; Redstone-specific branding, first-boot integration and end-to-end validation remain open. The optional package helper is currently a repository script and is not yet injected into the installed image.
