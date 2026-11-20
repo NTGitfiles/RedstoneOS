@@ -33,7 +33,7 @@ jobs:
       - name: Install host-side theme rendering tools
         run: |
           sudo apt-get update
-          sudo apt-get install --yes imagemagick librsvg2-bin
+          sudo apt-get install --yes imagemagick librsvg2-bin ffmpeg
 
       - name: Build ISO using the runner Docker daemon
         shell: bash
