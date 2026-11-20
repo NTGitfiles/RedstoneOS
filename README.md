@@ -19,7 +19,7 @@ Run on a supported Arch Linux build host:
 ```bash
 git clone https://github.com/NTGitfiles/RedstoneOS.git
 cd RedstoneOS
-./scripts/build.sh
+bash scripts/build.sh
 ```
 
 The build script checks prerequisites, fetches the upstream repositories into the ignored `source/` directory, then invokes Omarchy ISO's own build entry point using the local source checkouts.
