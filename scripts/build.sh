@@ -229,7 +229,7 @@ ISO_BUILDER="$SOURCE_DIR/omarchy-iso/bin/omarchy-iso-make"
 info "Starting upstream ISO build with local Omarchy and package sources"
 (
   cd "$SOURCE_DIR/omarchy-iso"
-  "$ISO_BUILDER" --keep-pkg-cache --local-source "$SOURCE_DIR/omarchy" "$SOURCE_DIR/omarchy-pkgs"
+  NO_BOOT_OFFER=1 "$ISO_BUILDER" --keep-pkg-cache --local-source "$SOURCE_DIR/omarchy" "$SOURCE_DIR/omarchy-pkgs"
 )
 
 info "Build command completed. Check the upstream builder output for the generated ISO location."
