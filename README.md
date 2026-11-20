@@ -4,6 +4,10 @@ Redstone OS is a custom, reproducible Linux distribution project built on the Om
 
 The initial build system keeps upstream source checkouts separate from Redstone-owned configuration and patches. It does not copy or fork the complete upstream repositories into this repository.
 
+## Project roadmap
+
+The [Redstone OS Roadmap](docs/ROADMAP.md) tracks the full non-application scope: visual identity, desktop configuration, hardware support, installer and first-boot experience, updates and recovery, security, and build/release infrastructure. These are planned work items, not claims of completed functionality.
+
 ## Upstream
 
 - [Omarchy](https://github.com/omacom/omarchy) — release tag: `v4.5.0`
@@ -40,11 +44,11 @@ Build output and upstream checkouts are intentionally not committed.
 - `source/omarchy-iso` — ISO builder at the 4.5.0 release-time commit (pinned submodule)
 - `source/UPSTREAMS.lock` — human-readable revision manifest
 - `output/` — generated ISO artifacts (ignored by Git)
-- `docs/` — design notes and build documentation
+- `docs/` — design notes, roadmap and build documentation
 
 ## Important
 
-This repository now contains pinned Git submodule references to the actual Omarchy 4.5.0 source and matching release-time package/ISO sources. The upstream source files are fetched from their original repositories when submodules are initialised; they are not duplicated into Redstone's own Git history. This is not yet a finished Redstone-branded operating system. The generated theme is an initial branding layer; package choices, hardware profiles and additional patches must still be implemented and tested before claiming a release.
+This repository now contains pinned Git submodule references to the actual Omarchy 4.5.0 source and matching release-time package/ISO sources. The upstream source files are fetched from their original repositories when submodules are initialised; they are not duplicated into Redstone's own Git history. This is not yet a finished Redstone-branded operating system. The generated theme is an initial branding layer; package choices, hardware profiles, installer work and additional patches must still be implemented and tested before claiming a release.
 
 The standard ISO build path is used. OEM provisioning is deliberately not enabled.
 
