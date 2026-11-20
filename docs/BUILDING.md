@@ -2,15 +2,18 @@
 
 ## Build host
 
-The initial builder targets an Arch Linux environment with Bash, Git, and the ArchISO/Omarchy ISO build dependencies available. Use a disposable or dedicated build environment.
+The initial builder targets an Arch Linux environment with Bash, Git, and the ArchISO/Omarchy ISO build dependencies available. Install ImageMagick (`imagemagick` on Arch) as well; the Redstone theme generator uses it to render the wallpaper PNG. Use a disposable or dedicated build environment.
 
 ## Build flow
 
 1. Check required host tools.
 2. Initialise the three pinned upstream Git submodules under `source/` (or clone them if building from a source archive without submodule metadata).
 3. Revert only patches that this builder previously applied, then reject unrelated local modifications.
-4. Apply Redstone-maintained patches.
-5. Invoke the upstream ISO builder with the local source directories.
+4. Generate the RedstoneOS dark theme, its 2560x1440 wallpaper, and a theme preview inside the Omarchy source tree.
+5. Apply Redstone-maintained patches.
+6. Invoke the upstream ISO builder with the local source directories.
+
+The generated theme is named `redstone` and is built from `themes/redstone/colors.toml`, `themes/redstone/backgrounds/redstone.png`, and `themes/redstone/preview.png`. The SVG wallpaper source is kept alongside the PNG. The generator only removes its own output, identified by `.redstone-generated`, on the next build. It refuses to overwrite a theme directory that it did not create.
 
 The build script does not enable OEM provisioning and does not select a target disk.
 
@@ -20,4 +23,4 @@ The default refs are immutable commit IDs recorded in `.gitmodules`, the submodu
 
 ## Current status
 
-The upstream source integration is pinned to Omarchy 4.5.0, but the Redstone distribution work remains a scaffold. It delegates ISO construction to the pinned upstream builder and does not yet implement Redstone-specific branding, package policy or hardware profiles. The source pins have not yet been exercised in a full ISO build.
+The upstream source integration is pinned to Omarchy 4.5.0, and the build script now generates the initial RedstoneOS theme and wallpaper. Redstone-specific package policy and hardware profiles remain scaffold placeholders. The source pins and generated theme have not yet been exercised in a full ISO build.
