@@ -5,12 +5,19 @@ ROOT_DIR="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")/.." && pwd)"
 OUT="$ROOT_DIR/output/branding"
 mkdir -p "$OUT"
 
-for cmd in magick ffmpeg; do
-  command -v "$cmd" >/dev/null 2>&1 || {
-    echo "Missing required tool: $cmd" >&2
-    exit 1
-  }
-done
+if command -v magick >/dev/null 2>&1; then
+  IM=magick
+elif command -v convert >/dev/null 2>&1; then
+  IM=convert
+else
+  echo "Missing required tool: ImageMagick (magick or convert)" >&2
+  exit 1
+fi
+
+command -v ffmpeg >/dev/null 2>&1 || {
+  echo "Missing required tool: ffmpeg" >&2
+  exit 1
+}
 
 # Desktop wallpaper, rendered at native 2560x1440.
 cat > "$OUT/redstone-desktop.svg" <<'SVG'
@@ -37,7 +44,7 @@ cat > "$OUT/redstone-desktop.svg" <<'SVG'
 <path d="M930 1220H1630" stroke="#e34b3f" stroke-opacity=".6" stroke-width="3"/>
 </svg>
 SVG
-magick "$OUT/redstone-desktop.svg" -strip "$OUT/redstone-desktop-2560x1440.png"
+"$IM" "$OUT/redstone-desktop.svg" -strip "$OUT/redstone-desktop-2560x1440.png"
 
 # Animated six-second theme intro using the same generated desktop artwork.
 ffmpeg -hide_banner -loglevel error -y -loop 1 -framerate 30 \
@@ -70,7 +77,7 @@ cat > "$OUT/redstone-pixel-7a.svg" <<'SVG'
 <path d="M300 2160H780" stroke="#e34b3f" stroke-opacity=".65" stroke-width="3"/>
 </svg>
 SVG
-magick "$OUT/redstone-pixel-7a.svg" -strip "$OUT/redstone-pixel-7a-1080x2400.png"
+"$IM" "$OUT/redstone-pixel-7a.svg" -strip "$OUT/redstone-pixel-7a-1080x2400.png"
 rm -f "$OUT/redstone-desktop.svg" "$OUT/redstone-pixel-7a.svg"
 
 cat > "$OUT/README.txt" <<'TXT'
