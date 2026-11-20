@@ -14,76 +14,97 @@ else
   exit 1
 fi
 
-command -v ffmpeg >/dev/null 2>&1 || {
-  echo "Missing required tool: ffmpeg" >&2
+command -v manim >/dev/null 2>&1 || {
+  echo "Missing required tool: Manim Community Edition" >&2
   exit 1
 }
 
-# Desktop wallpaper, rendered at native 2560x1440.
+# Desktop wallpaper: a custom pixel-art redstone world, not a generic stone logo.
 cat > "$OUT/redstone-desktop.svg" <<'SVG'
 <svg xmlns="http://www.w3.org/2000/svg" width="2560" height="1440" viewBox="0 0 2560 1440">
 <defs>
- <linearGradient id="bg" x2="1" y2="1"><stop stop-color="#292124"/><stop offset=".52" stop-color="#171416"/><stop offset="1" stop-color="#090809"/></linearGradient>
- <linearGradient id="stone" x2="1" y2="1"><stop stop-color="#ff9270"/><stop offset="1" stop-color="#8f2928"/></linearGradient>
- <radialGradient id="glow"><stop stop-color="#e34b3f" stop-opacity=".4"/><stop offset="1" stop-color="#e34b3f" stop-opacity="0"/></radialGradient>
- <pattern id="grid" width="96" height="96" patternUnits="userSpaceOnUse"><path d="M96 0H0V96" fill="none" stroke="#fff" stroke-opacity=".035" stroke-width="2"/></pattern>
+ <linearGradient id="sky" x2="0" y2="1"><stop stop-color="#101c29"/><stop offset="1" stop-color="#080d14"/></linearGradient>
+ <pattern id="pixels" width="128" height="128" patternUnits="userSpaceOnUse"><path d="M0 0H128V128H0Z" fill="none" stroke="#8193a4" stroke-opacity=".055" stroke-width="5"/><path d="M64 0V128M0 64H128" stroke="#8193a4" stroke-opacity=".025" stroke-width="3"/></pattern>
+ <radialGradient id="redglow"><stop stop-color="#ff553e" stop-opacity=".38"/><stop offset="1" stop-color="#ff553e" stop-opacity="0"/></radialGradient>
 </defs>
-<rect width="2560" height="1440" fill="url(#bg)"/><rect width="2560" height="1440" fill="url(#grid)"/>
-<ellipse cx="1280" cy="680" rx="900" ry="700" fill="url(#glow)"/>
-<g transform="translate(1280 650)">
- <path d="M0-390 338-195V195L0 390-338 195V-195Z" fill="none" stroke="#e34b3f" stroke-opacity=".28" stroke-width="6"/>
- <path d="M0-290 251-145V145L0 290-251 145V-145Z" fill="#171416" stroke="#713532" stroke-width="9"/>
- <path d="M0-225 195-112V112L0 225-195 112V-112Z" fill="url(#stone)"/>
- <path d="M0-225 195-112 0 0-195-112Z" fill="#ffb08a"/>
- <path d="M-195-112 0 0V225L-195 112Z" fill="#a53230"/>
- <path d="M195-112 0 0V225L195 112Z" fill="#6f2425"/>
- <path d="M0-120 104-60V60L0 120-104 60V-60Z" fill="#171416" stroke="#ffd0a7" stroke-width="7"/>
- <path d="M0-65 56-32V32L0 65-56 32V-32Z" fill="#e34b3f"/>
+<rect width="2560" height="1440" fill="url(#sky)"/><rect width="2560" height="1440" fill="url(#pixels)"/>
+<ellipse cx="1300" cy="700" rx="1050" ry="620" fill="url(#redglow)"/>
+<!-- Floating block-built terrain -->
+<g opacity=".85">
+ <path d="M0 940H360V850H520V940H740V1080H0Z" fill="#17232b"/>
+ <path d="M0 940H360V850H520V940H740" fill="none" stroke="#35434a" stroke-width="12"/>
+ <path d="M1830 880H2040V760H2200V880H2560V1120H1830Z" fill="#18242c"/>
+ <path d="M1830 880H2040V760H2200V880H2560" fill="none" stroke="#3a474d" stroke-width="12"/>
+ <g fill="#31434a"><rect x="170" y="780" width="96" height="96"/><rect x="2180" y="640" width="96" height="96"/><rect x="2280" y="540" width="96" height="96"/></g>
 </g>
-<g fill="#f5eeeb" text-anchor="middle" font-family="sans-serif"><text x="1280" y="1110" font-size="68" letter-spacing="24">REDSTONE OS</text><text x="1280" y="1170" font-size="23" letter-spacing="11" opacity=".55">BUILT ON OPEN SOURCE</text></g>
-<path d="M930 1220H1630" stroke="#e34b3f" stroke-opacity=".6" stroke-width="3"/>
+<!-- Redstone dust circuit, stepped like a block-game build -->
+<g fill="none" stroke-linecap="square" stroke-linejoin="miter">
+ <path d="M180 1130H520V1010H760V890H1000V770H1240V890H1500V1010H1760V1130H2260" stroke="#542626" stroke-width="28"/>
+ <path d="M180 1130H520V1010H760V890H1000V770H1240V890H1500V1010H1760V1130H2260" stroke="#f04b3e" stroke-width="9"/>
+</g>
+<g fill="#ff7655"><rect x="500" y="990" width="40" height="40"/><rect x="740" y="870" width="40" height="40"/><rect x="980" y="750" width="40" height="40"/><rect x="1220" y="870" width="40" height="40"/><rect x="1480" y="990" width="40" height="40"/><rect x="1740" y="1110" width="40" height="40"/></g>
+<!-- Isometric redstone block -->
+<g transform="translate(1280 590)">
+ <path d="M0-270 245-135 0 0-245-135Z" fill="#ef8060" stroke="#ffb18a" stroke-width="8"/>
+ <path d="M-245-135 0 0V270L-245 135Z" fill="#a43d35" stroke="#d65a46" stroke-width="8"/>
+ <path d="M245-135 0 0V270L245 135Z" fill="#712b2e" stroke="#a9433b" stroke-width="8"/>
+ <path d="M-85-145 0-190 85-145 0-100Z" fill="#ffb77d"/>
+ <path d="M-85-145 0-100V-10L-85-55Z" fill="#e34b3f"/>
+ <path d="M85-145 0-100V-10L85-55Z" fill="#a72d32"/>
+ <path d="M0-65 62-30V42L0 78-62 42V-30Z" fill="#211b20" stroke="#ffc28e" stroke-width="7"/>
+ <path d="M0-38 34-19V19L0 38-34 19V-19Z" fill="#ff543d"/>
+</g>
+<!-- Redstone torch -->
+<g transform="translate(1280 185)"><rect x="-20" y="40" width="40" height="130" fill="#9c593d"/><rect x="-34" y="0" width="68" height="62" fill="#f04b3e"/><rect x="-16" y="15" width="32" height="30" fill="#ffc06b"/></g>
+<g fill="#f6eee8" text-anchor="middle" font-family="DejaVu Sans Mono,monospace">
+ <text x="1280" y="1260" font-size="76" font-weight="bold" letter-spacing="18">REDSTONE OS</text>
+ <text x="1280" y="1320" font-size="25" letter-spacing="10" fill="#ff9272">POWERED BY REDSTONE</text>
+</g>
 </svg>
 SVG
 "$IM" "$OUT/redstone-desktop.svg" -strip "$OUT/redstone-desktop-2560x1440.png"
 
-# Animated six-second theme intro using the same generated desktop artwork.
-ffmpeg -hide_banner -loglevel error -y -loop 1 -framerate 30 \
-  -i "$OUT/redstone-desktop-2560x1440.png" \
-  -vf "scale=1920:1080:force_original_aspect_ratio=increase,crop=1920:1080,zoompan=z='1+0.045*(0.5-0.5*cos(2*PI*on/180))':x='iw/2-(iw/zoom/2)':y='ih/2-(ih/zoom/2)':d=1:s=1920x1080:fps=30,fade=t=in:st=0:d=0.7,fade=t=out:st=5.3:d=0.7,format=yuv420p" \
-  -t 6 -an -c:v libx264 -preset veryfast -crf 20 -movflags +faststart \
-  "$OUT/redstone-theme-intro-6s.mp4"
-
-# Google Pixel 7a portrait wallpaper, 1080x2400.
+# Matching tall Pixel 7a wallpaper, composed for a phone lock screen.
 cat > "$OUT/redstone-pixel-7a.svg" <<'SVG'
 <svg xmlns="http://www.w3.org/2000/svg" width="1080" height="2400" viewBox="0 0 1080 2400">
 <defs>
- <linearGradient id="bg" x2=".8" y2="1"><stop stop-color="#09090d"/><stop offset=".55" stop-color="#211419"/><stop offset="1" stop-color="#08090c"/></linearGradient>
- <radialGradient id="glow"><stop stop-color="#e34b3f" stop-opacity=".5"/><stop offset="1" stop-color="#e34b3f" stop-opacity="0"/></radialGradient>
- <linearGradient id="gem" x2="1" y2="1"><stop stop-color="#ff9a70"/><stop offset="1" stop-color="#8f2928"/></linearGradient>
+ <linearGradient id="bg" x2="0" y2="1"><stop stop-color="#101c29"/><stop offset=".65" stop-color="#11151c"/><stop offset="1" stop-color="#080d14"/></linearGradient>
+ <radialGradient id="glow"><stop stop-color="#ff553e" stop-opacity=".48"/><stop offset="1" stop-color="#ff553e" stop-opacity="0"/></radialGradient>
+ <pattern id="grid" width="90" height="90" patternUnits="userSpaceOnUse"><path d="M90 0H0V90" fill="none" stroke="#91a2ad" stroke-opacity=".06" stroke-width="3"/></pattern>
 </defs>
-<rect width="1080" height="2400" fill="url(#bg)"/>
-<ellipse cx="540" cy="1500" rx="620" ry="760" fill="url(#glow)"/>
-<circle cx="540" cy="1460" r="390" fill="#32171d" stroke="#b9433a" stroke-opacity=".35" stroke-width="4"/>
-<g transform="translate(540 1450)">
- <path d="M0-330 286-165V165L0 330-286 165V-165Z" fill="#171116" stroke="#e34b3f" stroke-width="8"/>
- <path d="M0-255 221-127V127L0 255-221 127V-127Z" fill="url(#gem)"/>
- <path d="M0-255 221-127 0 0-221-127Z" fill="#ffb08a"/>
- <path d="M-221-127 0 0V255L-221 127Z" fill="#a53230"/>
- <path d="M221-127 0 0V255L221 127Z" fill="#70242a"/>
- <path d="M0-105 91-52V52L0 105-91 52V-52Z" fill="#171116" stroke="#ffd0a7" stroke-width="7"/>
+<rect width="1080" height="2400" fill="url(#bg)"/><rect width="1080" height="2400" fill="url(#grid)"/>
+<ellipse cx="540" cy="1300" rx="650" ry="700" fill="url(#glow)"/>
+<g opacity=".8" fill="#1a2a33"><rect x="0" y="1550" width="230" height="170"/><rect x="850" y="1460" width="230" height="260"/><rect x="120" y="1380" width="100" height="100"/><rect x="860" y="1300" width="100" height="100"/></g>
+<path d="M80 1700H260V1580H400V1460H540V1580H680V1700H1000" fill="none" stroke="#e34b3f" stroke-width="12" stroke-linejoin="miter"/>
+<g transform="translate(540 1110)">
+ <path d="M0-300 260-150 0 0-260-150Z" fill="#ef8060" stroke="#ffb18a" stroke-width="8"/>
+ <path d="M-260-150 0 0V300L-260 150Z" fill="#a43d35" stroke="#d65a46" stroke-width="8"/>
+ <path d="M260-150 0 0V300L260 150Z" fill="#712b2e" stroke="#a9433b" stroke-width="8"/>
+ <path d="M0-75 70-35V45L0 85-70 45V-35Z" fill="#211b20" stroke="#ffc28e" stroke-width="7"/>
+ <path d="M0-43 38-21V21L0 43-38 21V-21Z" fill="#ff543d"/>
 </g>
-<path d="M0 1840Q270 1690 540 1850T1080 1810V2400H0Z" fill="#09090d" opacity=".9"/>
-<g fill="#f5eeeb" text-anchor="middle" font-family="sans-serif"><text x="540" y="2040" font-size="52" letter-spacing="12">REDSTONE OS</text><text x="540" y="2100" font-size="21" letter-spacing="7" opacity=".55">BUILT ON OPEN SOURCE</text></g>
-<path d="M300 2160H780" stroke="#e34b3f" stroke-opacity=".65" stroke-width="3"/>
+<g transform="translate(540 680)"><rect x="-17" y="35" width="34" height="110" fill="#9c593d"/><rect x="-30" y="0" width="60" height="55" fill="#f04b3e"/><rect x="-14" y="13" width="28" height="27" fill="#ffc06b"/></g>
+<g fill="#f6eee8" text-anchor="middle" font-family="DejaVu Sans Mono,monospace"><text x="540" y="1940" font-size="58" font-weight="bold" letter-spacing="7">REDSTONE OS</text><text x="540" y="2010" font-size="23" letter-spacing="5" fill="#ff9272">POWERED BY REDSTONE</text></g>
 </svg>
 SVG
 "$IM" "$OUT/redstone-pixel-7a.svg" -strip "$OUT/redstone-pixel-7a-1080x2400.png"
-rm -f "$OUT/redstone-desktop.svg" "$OUT/redstone-pixel-7a.svg"
 
+# Manim renders the animated intro from the same visual language.
+manim --renderer=cairo -ql --fps 30 -r 1920,1080 \
+  "$ROOT_DIR/scripts/redstone-intro.py" RedstoneBootIntro
+RENDERED="$ROOT_DIR/media/videos/redstone-intro/480p30/RedstoneBootIntro.mp4"
+if [[ ! -s "$RENDERED" ]]; then
+  echo "Manim did not produce the expected intro video: $RENDERED" >&2
+  find "$ROOT_DIR/media/videos" -type f -name '*.mp4' -print >&2 || true
+  exit 1
+fi
+cp "$RENDERED" "$OUT/redstone-theme-intro-manim.mp4"
+
+rm -f "$OUT/redstone-desktop.svg" "$OUT/redstone-pixel-7a.svg"
 cat > "$OUT/README.txt" <<'TXT'
-Redstone OS branding pack
-- redstone-desktop-2560x1440.png: desktop wallpaper
-- redstone-theme-intro-6s.mp4: six-second animated theme intro
+Redstone OS Minecraft-inspired branding pack
+- redstone-desktop-2560x1440.png: pixel-art desktop wallpaper
+- redstone-theme-intro-manim.mp4: animated Manim redstone-circuit boot intro
 - redstone-pixel-7a-1080x2400.png: Google Pixel 7a portrait wallpaper
 Generated by the standalone GitHub Actions branding workflow.
 TXT
