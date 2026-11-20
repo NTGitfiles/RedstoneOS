@@ -92,7 +92,7 @@ class RedstoneBootIntro(Scene):
         title.move_to([0, -2.85, 0])
         tagline = Text("POWERED BY REDSTONE",
                        font="DejaVu Sans Mono", font_size=15,
-                       color="#ff8967", letter_spacing=0.12)
+                       color="#ff8967")
         tagline.move_to([0, -3.48, 0])
         underline = VGroup(
             Rectangle(width=1.2, height=0.055, fill_color="#8d302e",
