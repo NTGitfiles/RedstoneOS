@@ -1,19 +1,23 @@
-# Package policy
+# Package policy and optional software
 
-`groups.toml` defines the intended package groups: base, desktop, Intel graphics, AMD graphics, NVIDIA graphics, laptop, accessibility, printing and development.
+The pinned Omarchy 4.5 runtime already includes a substantial portion of the selected wishlist. Examples include Herdr, Docker, Docker Buildx/Compose, CUPS, FFmpeg, Fastfetch, btop, Git, Neovim (packaged upstream as nvim), LibreOffice, LocalSend, MPV, Plymouth, Tailscale, yt-dlp, zoxide, and several fonts and graphics components. Do not duplicate these in the Redstone base image.
 
-The lists are intentionally empty. Before adding package names, inspect the pinned Omarchy package snapshot, confirm package availability, dependencies, architecture and licensing, and document why Redstone needs each addition or removal. Do not treat this file as an instruction to install every optional group.
+wishlist.toml is the complete user-selected inventory. optional/*.packages maps common optional groups to candidate Arch package names. The post-install helper checks each name against the machine's currently configured official pacman repositories before offering installation. Missing packages are skipped and reported; it does not silently add AUR helpers, third-party repositories, or proprietary driver sources.
 
-## Collected application wishlist
+Run:
 
-`wishlist.toml` records the application and optional-tool selections collected for Redstone OS. It is deliberately separate from `groups.toml`: entries are user-approved wishlist items, not yet validated Arch package names and not automatically installed by the ISO build.
+```bash
+scripts/install-redstone-extras.sh --list
+scripts/install-redstone-extras.sh --dry-run gaming terminal
+scripts/install-redstone-extras.sh gaming terminal
+```
 
-Next steps before wiring it into the image:
+Hardware-specific groups are deliberately separate. Review scripts/detect-hardware.sh before considering a driver group. NVIDIA modules are kernel-sensitive; Intel/AMD microcode and graphics packages should match the actual hardware. TLP and Power Profiles Daemon must not both be enabled as competing power managers without an explicit policy.
 
-1. Map each friendly name to a verified package source and exact package identifier.
-2. Check the pinned upstream package snapshot, architecture, licensing and dependencies.
-3. Split universal packages from optional, hardware-specific and ARM64-only packages.
-4. Resolve known overlaps and conflicts (for example, power managers and bootloaders).
-5. Generate reviewed install groups and add build-time validation.
+The package-management options in the questionnaire were not submitted. The helper therefore uses pacman only and does not install a new AUR helper or package-store GUI. Flatpak was selected in the wishlist but its application IDs still need a separately reviewed Flathub catalogue.
 
-The package-management options in the questionnaire were not selected and are explicitly recorded as unapproved in the wishlist.
+Some names in the wishlist are proprietary, AUR-only, renamed, unavailable on ARM64, or require extra repositories. Unity Hub, Unreal Engine tooling, Switch emulation alternatives, and Raspberry Pi imaging tools are not installed by the helper until their distribution and package sources are reviewed.
+
+## Upstream inheritance
+
+The pinned Omarchy 4.5 package list already contains herdr, resolving the earlier spelling question. It also ships the Limine bootloader and Btrfs/Snapper/ZRAM-related pieces. Redstone should extend this baseline rather than replace it with GRUB or install a second bootloader. The upstream ISO project supports x86_64 and aarch64 build targets; aarch64 support alone does not certify Raspberry Pi 5 board support.
