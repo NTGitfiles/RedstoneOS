@@ -1,0 +1,7 @@
+# Omarchy 4.5.0 (Quattro RS) source pins
+# Each value is an upstream Git commit used as a Git submodule gitlink.
+OMARCHY_VERSION=4.5.0
+OMARCHY_TAG=v4.5.0
+OMARCHY_COMMIT=ac2690cd7be4f47e4a255f5e2e78d904d436b068
+OMARCHY_PKGS_COMMIT=9043460ca583d8f012c75f2321bfc0f39cb3649e
+OMARCHY_ISO_COMMIT=d5136a69782c00fe8d53fc98e4f3a990447d4840
