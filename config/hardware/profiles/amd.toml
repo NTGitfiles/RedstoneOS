@@ -1,0 +1,7 @@
+[profile]
+id = "amd"
+description = "AMD CPU and Radeon graphics"
+match_vendor = "AuthenticAMD"
+graphics_policy = "Use the kernel/Mesa stack appropriate to the detected Radeon GPU."
+firmware_policy = "Install required redistributable firmware after package validation."
+status = "policy-only"

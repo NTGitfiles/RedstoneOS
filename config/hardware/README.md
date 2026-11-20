@@ -1,7 +1,5 @@
 # Hardware profiles
 
-Hardware profiles and detection policy belong here.
+`detection.toml` defines conservative CPU, PCI, kernel-driver and DMI detection policy. Device-specific policy lives in `profiles/` for Intel, AMD, NVIDIA, laptops, touch devices, audio and peripherals.
 
-Profiles should describe supported devices, required firmware, graphics drivers and known limitations. Detection must be conservative: never infer that a device is supported solely from a broad vendor string.
-
-No device-specific profile is enabled by this scaffold.
+These are policy-only profiles, not an implemented hardware detection or driver installation service. Unknown devices should produce a warning. Driver installation, especially proprietary NVIDIA modules, must not happen automatically without explicit policy and compatibility checks.

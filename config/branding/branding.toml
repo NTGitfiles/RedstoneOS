@@ -1,0 +1,24 @@
+# Redstone OS visual identity
+[identity]
+name = "Redstone OS"
+short_name = "Redstone"
+tagline = "Built on open source"
+theme_name = "redstone"
+color_mode = "dark"
+
+[colors]
+accent = "#e34b3f"
+background = "#171416"
+background_dark = "#100e10"
+foreground = "#eee6e2"
+muted = "#8c5149"
+selection = "#492522"
+
+[assets]
+# Paths are relative to this repository. Theme generation currently lives in scripts/build.sh.
+logo = "assets/logo/README.md"
+icons = "assets/icons/README.md"
+wallpapers = "assets/wallpapers/README.md"
+boot = "assets/boot/README.md"
+login = "assets/login/README.md"
+installer = "assets/installer/README.md"

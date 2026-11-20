@@ -1,0 +1,10 @@
+[profile]
+id = "laptop"
+description = "Laptop power, battery, suspend and input defaults"
+detect_battery = true
+detect_lid = true
+power_profile_policy = "balanced-default"
+suspend_policy = "respect-upstream"
+hibernate_policy = "disabled-until-swap-and-resume-validated"
+touchpad_policy = "libinput-defaults"
+status = "policy-only"

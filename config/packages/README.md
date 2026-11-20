@@ -1,5 +1,5 @@
 # Package policy
 
-Record Redstone package additions, removals and rationale here.
+`groups.toml` defines the intended package groups: base, desktop, Intel graphics, AMD graphics, NVIDIA graphics, laptop, accessibility, printing and development.
 
-Keep package changes separate from upstream package definitions until the target Omarchy 4.5 package structure has been reviewed. The initial scaffold intentionally makes no unverified package substitutions.
+The lists are intentionally empty. Before adding package names, inspect the pinned Omarchy package snapshot, confirm package availability, dependencies, architecture and licensing, and document why Redstone needs each addition or removal. Do not treat this file as an instruction to install every optional group.
