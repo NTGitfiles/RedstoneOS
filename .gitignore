@@ -1,0 +1,14 @@
+# Upstream checkouts and generated artifacts
+/source/
+/output/
+/.cache/
+*.iso
+*.iso.sha256
+*.log
+*.tmp
+
+# Local editor / OS files
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
