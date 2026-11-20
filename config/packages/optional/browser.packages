@@ -1,0 +1,3 @@
+# Zen Browser is often distributed outside the official Arch repositories.
+# The helper will skip it unless the configured official repositories provide it.
+zen-browser

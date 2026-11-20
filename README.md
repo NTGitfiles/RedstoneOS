@@ -24,6 +24,9 @@ Run on a supported Arch Linux build host with ImageMagick installed (`sudo pacma
 git clone --recurse-submodules https://github.com/NTGitfiles/RedstoneOS.git
 cd RedstoneOS
 bash scripts/build.sh
+
+# Optional generic ARM64 ISO build (requires Docker ARM64 emulation)
+REDSTONE_ARCH=aarch64 bash scripts/build.sh
 ```
 
 The build script generates the initial RedstoneOS dark theme and custom 2560x1440 wallpaper before invoking the upstream ISO builder. The theme includes an SVG source, PNG background and preview. A full ISO build has not yet been validated.
@@ -38,7 +41,7 @@ The build script generates the initial RedstoneOS dark theme and custom 2560x144
 - `config/security/` — security baseline policy
 - `config/maintenance/` — updates, snapshots, rollback and recovery design
 - `patches/` — Redstone-maintained patches for upstream projects
-- `scripts/` — build, theme generation, verification and cleanup helpers
+- `scripts/` — build, theme generation, hardware detection, optional package installation and verification helpers
 - `source/` — pinned Omarchy, package and ISO-builder submodules
 - `docs/ROADMAP.md` — full non-app feature list and implementation sequence
 - `docs/TESTING.md` — build, VM, hardware, security and recovery test matrix
@@ -47,7 +50,7 @@ The build script generates the initial RedstoneOS dark theme and custom 2560x144
 
 The repository contains the complete non-application feature roadmap and configuration scaffolding for branding, desktop defaults, hardware profiles, installation, security, maintenance and recovery. The generated theme and pinned upstream integration still need full build validation. Installer, first-boot wizard, automatic hardware configuration, update/rollback and recovery tooling are not implemented yet.
 
-Configuration files marked as policy or scaffold are not automatically applied to a running system. Package groups are intentionally empty until package names and dependencies are checked against the pinned upstream snapshot. Hardware detection is designed to warn rather than silently install drivers.
+Configuration files marked as policy or scaffold are not automatically applied to a running system. The application wishlist is kept separate from the compact upstream base. Optional package groups are checked against the current pacman repositories before installation; unavailable packages are skipped rather than sourced from unreviewed repositories. Hardware detection is read-only. The upstream ISO supports x86_64 and aarch64 builds; Raspberry Pi 5 board support remains unverified.
 
 ## Design principle
 
