@@ -1,10 +1,9 @@
 #!/usr/bin/env bash
 set -Eeuo pipefail
-
-ROOT_DIR="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")/.." && pwd)"
+ROOT_DIR="$(cd -- "$(dirname -- "$0")/.." && pwd)"
 cd "$ROOT_DIR"
 
-fail() { printf 'FAIL: %s\\n' "$*" >&2; exit 1; }
+fail() { printf 'FAIL: %s\n' "$*" >&2; exit 1; }
 for command in git bash python3; do
   command -v "$command" >/dev/null 2>&1 || fail "Missing required command: $command"
 done
@@ -41,5 +40,5 @@ for path in Path("config/packages/optional").glob("*.packages"):
 print("TOML and optional package-list syntax: OK")
 PY
 
-printf 'Redstone static verification passed.\\n'
-printf 'This does not build an ISO or prove package availability on every architecture.\\n'
+printf 'Redstone static verification passed.\n'
+printf 'This does not build an ISO or prove package availability on every architecture.\n'
