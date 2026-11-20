@@ -1,0 +1,9 @@
+[profile]
+id = "touch-devices"
+description = "Touchscreens, touchpads, stylus and HiDPI"
+touchscreen = "detect-and-use-supported-kernel-input"
+touchpad = "libinput"
+stylus = "enable-when-device-is-detected"
+hidpi = "user-configurable-scaling"
+multi_monitor = "per-output-configuration"
+status = "policy-only"

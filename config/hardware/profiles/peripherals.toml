@@ -1,0 +1,7 @@
+[profile]
+id = "peripherals"
+description = "Bluetooth, printers, scanners and external devices"
+bluetooth = "detect-and-configure-through-upstream-services"
+printing = "optional-package-group"
+scanning = "optional-package-group"
+status = "policy-only"

@@ -1,0 +1,47 @@
+name: Generate Redstone Branding
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - redstone/bootstrap
+    paths:
+      - "scripts/generate-branding-assets.sh"
+      - "scripts/redstone-intro.py"
+      - ".github/workflows/generate-branding.yml"
+
+permissions:
+  contents: read
+
+concurrency:
+  group: redstone-branding-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  generate-branding:
+    name: Generate wallpapers and Manim intro
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - name: Check out Redstone OS
+        uses: actions/checkout@v4
+      - name: Install rendering dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install --yes imagemagick ffmpeg python3-venv python3-dev pkg-config libcairo2-dev libpango1.0-dev
+      - name: Install Manim Community Edition
+        run: |
+          python3 -m venv .venv
+          .venv/bin/python -m pip install --upgrade pip
+          .venv/bin/python -m pip install manim
+          echo "$PWD/.venv/bin" >> "$GITHUB_PATH"
+      - name: Generate all branding assets
+        run: bash scripts/generate-branding-assets.sh
+      - name: Upload branding pack
+        uses: actions/upload-artifact@v4
+        with:
+          name: redstone-branding-${{ github.sha }}
+          path: output/branding/
+          if-no-files-found: error
+          compression-level: 6
+          retention-days: 30

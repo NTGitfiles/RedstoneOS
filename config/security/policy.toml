@@ -1,0 +1,23 @@
+# Security baseline policy. Not yet enforced by an installer.
+[updates]
+source = "signed-distribution-repositories"
+allow_unverified_packages = false
+automatic_updates = false
+
+[firewall]
+enabled = true
+default_incoming = "deny"
+default_outgoing = "allow"
+status = "planned"
+
+[storage]
+encryption = "installer-choice"
+btrfs_snapshots = "planned"
+secure_boot = "optional-future-work"
+
+[services]
+enable_only_required_services = true
+review_enabled_services_on_release = true
+
+[permissions]
+use_unprivileged_user_by_default = true

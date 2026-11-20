@@ -1,0 +1,8 @@
+[profile]
+id = "nvidia"
+description = "NVIDIA graphics"
+match_vendor = "NVIDIA"
+graphics_policy = "Select an appropriate driver only after PCI ID, GPU generation and kernel compatibility checks."
+secure_boot_note = "Module signing/enrolment requirements must be documented before enabling proprietary modules."
+automatic_install = false
+status = "policy-only"

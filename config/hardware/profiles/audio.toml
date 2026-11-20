@@ -1,0 +1,7 @@
+[profile]
+id = "audio"
+description = "Audio device discovery and sensible defaults"
+stack = "follow-upstream-audio-stack"
+device_selection = "prefer-user-selection"
+bluetooth_audio = "optional-when-supported"
+status = "policy-only"

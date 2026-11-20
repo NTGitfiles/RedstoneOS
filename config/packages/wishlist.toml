@@ -1,0 +1,99 @@
+# Redstone OS application and package wishlist
+# Collected from user selections. This is a planning inventory, NOT an install manifest.
+# Friendly names are retained where the exact Arch/AUR/Flatpak package identity needs validation.
+# Before enabling any item, verify package availability against the pinned Omarchy/Arch snapshot,
+# architecture, dependencies, licensing, conflicts, service defaults and image-size impact.
+# Hardware- and architecture-specific entries must be conditional.
+
+[browser]
+selected = ["Zen Browser"]
+
+[gaming]
+selected = ["Steam", "Lutris", "Heroic Games Launcher", "Prism Launcher", "Modrinth App", "MangoHud", "GameMode", "ProtonUp-Qt", "Wine", "Gamescope", "RetroArch", "OBS Studio"]
+
+[development]
+selected = ["Neovim", "Git", "GitHub CLI", "Docker", "GCC", "Clang", "Python", "Node.js", "npm", "Visual Studio Code"]
+
+[productivity]
+selected = ["LibreOffice", "Papers", "KDE Connect", "LocalSend", "Calibre", "GIMP", "Inkscape", "Kdenlive"]
+
+[system_utilities]
+selected = ["Mission Center", "btop", "Fastfetch", "CUPS", "fwupd", "Flatpak", "AppImage support", "Virtual Machine Manager", "QEMU", "KVM", "Ventoy"]
+unresolved = ["Herdr (user supplied name; identify exact project before packaging)"]
+
+[multimedia]
+selected = ["VLC", "MPV", "Audacity", "EasyEffects", "HandBrake", "FFmpeg", "yt-dlp", "Ardour", "Blender"]
+
+[appearance]
+selected = ["Papirus icon theme", "Bibata cursor theme", "Wallpaper collection", "Nerd Fonts", "Plymouth boot themes"]
+
+[networking]
+selected = ["NetworkManager", "OpenSSH", "Tailscale"]
+
+[self_hosting]
+selected = []
+
+[hardware_support]
+selected = ["Intel microcode", "AMD microcode", "Mesa AMD graphics drivers", "Mesa Intel graphics drivers", "Vulkan drivers", "Power Profiles Daemon", "smartmontools", "nvme-cli", "lm_sensors", "NVIDIA drivers", "OpenCL support", "HPLIP printer drivers", "TLP", "SANE scanner support", "Thermald", "OpenRGB", "Solaar", "Piper", "Fingerprint reader support"]
+conditional = ["Intel microcode: Intel CPUs only", "AMD microcode: AMD CPUs only", "Mesa Intel: supported Intel graphics only", "Mesa AMD: supported AMD graphics only", "NVIDIA drivers: NVIDIA hardware and compatible kernel only", "OpenCL: compatible GPU/runtime only", "TLP and Power Profiles Daemon: reconcile power-management ownership before enabling together", "Fingerprint support: supported reader hardware only"]
+
+[file_management]
+selected = ["Dolphin", "7-Zip", "Unrar", "FSearch", "Baobab", "NTFS-3G", "exFAT support", "Ark"]
+
+[accessibility_and_languages]
+selected = ["Onboard on-screen keyboard", "English UK language support", "Emoji fonts"]
+
+[education_and_creative]
+selected = ["Godot Engine", "FreeCAD", "KiCad", "Unity Hub", "Unreal Engine tools"]
+notes = ["Check proprietary licensing, distribution restrictions, architecture support and upstream availability for Unity and Unreal tooling."]
+
+[communication]
+selected = ["Discord", "Telegram Desktop", "Zoom", "WhatsApp PWA"]
+
+[backup_and_recovery]
+selected = ["Arch Linux rescue utilities", "Pacman cache cleaner"]
+
+[desktop_utilities]
+selected = ["Flameshot", "CopyQ", "Espanso", "Input Leap", "Ulauncher"]
+
+[fonts_and_documents]
+selected = ["Noto Sans", "Noto Serif", "Noto Color Emoji", "Inter", "JetBrains Mono", "Fira Code", "Liberation Fonts", "Carlito"]
+
+[developer_infrastructure]
+selected = ["Docker Compose", "Docker Buildx", "Podman", "Distrobox", "kubectl", "Helm", "Terraform", "Ansible", "Make", "CMake", "Ninja"]
+notes = ["Docker and Podman can coexist but default services, socket activation and user permissions need deliberate configuration."]
+
+[gaming_extras]
+selected = ["Bottles", "Protontricks", "Winetricks", "GOverlay", "vkBasalt", "Moonlight", "Sunshine", "Dolphin Emulator", "PCSX2", "EmulationStation-DE", "Proton GE", "MangoHud GUI", "DXVK", "VKD3D-Proton", "Gamescope Session", "Chiaki", "Parsec", "RPCS3", "Ryujinx alternatives / Switch emulation tools", "OpenRGB gaming profiles"]
+conditional = ["FEX: ARM64-only compatibility layer; never install in x86_64 image"]
+notes = ["Validate emulator availability, legal distribution and architecture support; do not bundle copyrighted game firmware or keys."]
+
+[performance_and_boot]
+selected = ["Linux Zen kernel", "Linux LTS kernel", "ZRAM", "EarlyOOM", "irqbalance", "Ananicy-cpp", "System76 Scheduler", "Limine bootloader"]
+notes = ["Reconcile Limine with the existing GRUB/ArchISO boot chain before enabling. Provide compatible kernel entries and avoid changing the bootloader without testing."]
+
+[virtualisation]
+selected = ["Virt-Viewer", "SPICE guest tools", "Looking Glass", "libvirt", "OVMF", "SWTPM", "QEMU Guest Agent", "Windows virtio drivers ISO", "VirtualBox", "QEMU utilities"]
+notes = ["QEMU/KVM and VirtualBox require kernel/module/service compatibility checks. Guest-only tools should not be enabled as host defaults."]
+
+[cloud_and_sync]
+selected = []
+
+[diagnostics_and_monitoring]
+selected = ["nvtop", "inxi", "Glances", "Netdata", "bmon", "iperf3", "MTR", "strace", "GDB", "Valgrind"]
+
+[security_and_privacy]
+selected = ["VeraCrypt", "LUKS / cryptsetup", "GnuPG", "YubiKey tools", "FIDO2 utilities", "Firejail", "Bubblewrap", "Fail2ban", "Lynis", "OpenVPN"]
+
+[peripherals_and_device_support]
+selected = ["Document Scanner", "KDE Skanpage", "Gutenprint", "IPP Everywhere", "Avahi", "PipeWire Bluetooth codecs", "OpenTabletDriver", "Wacom tablet drivers", "Gamepad udev rules", "Epson printer drivers", "Canon printer drivers", "Samba printer sharing", "Bluetooth audio support", "OpenRazer", "libinput tools"]
+
+[smart_home_and_iot]
+selected = ["Raspberry Pi Imager", "Balena Etcher", "Arduino IDE"]
+
+[terminal_and_cli]
+selected = ["Zsh", "Fish shell", "Starship prompt", "Zoxide", "FZF", "Bat", "Eza", "Ripgrep", "Fd", "Yazi", "Tmux", "Atuin", "Lazygit", "Oh My Zsh"]
+
+[not_selected_or_not_answered]
+package_management_question = ["Pamac", "Octopi", "Bauh", "Topgrade", "Yay", "Paru", "KDE Discover", "Warehouse", "Gear Lever", "Nix", "Homebrew for Linux", "Chaotic-AUR tools"]
+notes = ["These were proposed as options but the user ended the questionnaire before selecting any. Do not treat them as approved."]

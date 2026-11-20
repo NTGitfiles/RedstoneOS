@@ -1,0 +1,33 @@
+# Target desktop/system policy. Values describe intended defaults;
+# they are not applied until an installer/provisioning implementation consumes them.
+[desktop]
+session = "Hyprland"
+shell = "Quickshell"
+theme = "redstone"
+color_mode = "dark"
+animations = "upstream-defaults-until-tested"
+window_layout = "upstream-defaults"
+shortcuts = "document-upstream-overrides-before-changing"
+terminal = "upstream-default"
+file_manager = "upstream-default"
+
+[display]
+scaling = "user-configurable"
+multi_monitor = "per-output"
+hi_dpi = "fractional-scaling-when-supported"
+
+[power]
+default_profile = "balanced"
+battery_saver = "on-low-battery"
+suspend = "upstream-default"
+hibernate = "disabled-until-resume-tested"
+
+[network]
+wifi = "upstream-network-manager"
+bluetooth = "optional"
+firewall = "enabled-when-policy-is-implemented"
+
+[accessibility]
+high_contrast = "available-as-user-option"
+text_scaling = "user-configurable"
+reduced_motion = "planned"

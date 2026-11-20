@@ -1,0 +1,38 @@
+# Package policy groups.
+# These are policy inventories, not an instruction to install every listed package.
+# Verify package names against the pinned Omarchy package snapshot before enabling.
+[base]
+description = "Core system, boot, networking and filesystem support"
+packages = []
+
+[desktop]
+description = "Hyprland, Quickshell, terminal, shell and desktop integration"
+packages = []
+
+[graphics_intel]
+description = "Intel graphics support"
+packages = []
+
+[graphics_amd]
+description = "AMD graphics support"
+packages = []
+
+[graphics_nvidia]
+description = "NVIDIA graphics support"
+packages = []
+
+[laptop]
+description = "Laptop power, firmware and input support"
+packages = []
+
+[accessibility]
+description = "Accessibility and assistive technology"
+packages = []
+
+[printing]
+description = "Printing and scanning support"
+packages = []
+
+[development]
+description = "Optional development tools"
+packages = []

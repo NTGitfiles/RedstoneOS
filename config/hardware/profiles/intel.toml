@@ -1,0 +1,7 @@
+[profile]
+id = "intel"
+description = "Intel CPU and integrated/discrete graphics"
+match_vendor = "GenuineIntel"
+graphics_policy = "Use the kernel/Mesa stack appropriate to the detected Intel GPU generation."
+firmware_policy = "Install required redistributable firmware after package validation."
+status = "policy-only"

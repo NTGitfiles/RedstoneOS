@@ -1,0 +1,26 @@
+# Conservative hardware detection policy.
+[policy]
+architecture = ["x86_64"]
+detect_cpu_vendor = true
+detect_pci_devices = true
+detect_kernel_drivers = true
+detect_dmi_product = true
+unknown_hardware_action = "warn"
+install_drivers_automatically = false
+enable_proprietary_drivers_automatically = false
+
+[vendors]
+intel_cpu = ["GenuineIntel"]
+amd_cpu = ["AuthenticAMD"]
+intel_gpu = ["Intel"]
+amd_gpu = ["AMD", "ATI", "Radeon"]
+nvidia_gpu = ["NVIDIA"]
+
+[profiles]
+intel = "profiles/intel.toml"
+amd = "profiles/amd.toml"
+nvidia = "profiles/nvidia.toml"
+laptop = "profiles/laptop.toml"
+touch = "profiles/touch-devices.toml"
+audio = "profiles/audio.toml"
+peripherals = "profiles/peripherals.toml"
