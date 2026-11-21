@@ -87,20 +87,50 @@ cat > "$OUT/redstone-pixel-7a.svg" <<'SVG'
 <g fill="#f6eee8" text-anchor="middle" font-family="DejaVu Sans Mono,monospace"><text x="540" y="1940" font-size="58" font-weight="bold" textLength="620" lengthAdjust="spacingAndGlyphs">REDSTONE OS</text><text x="540" y="2010" font-size="23" letter-spacing="5" fill="#ff9272">POWERED BY REDSTONE</text></g>
 </svg>
 SVG
+
 "$IM" "$OUT/redstone-pixel-7a.svg" -strip "$OUT/redstone-pixel-7a-1080x2400.png"
+
+# Additional matching wallpaper editions: a clean circuit blueprint and a warm redstone sunset.
+cat > "$OUT/redstone-circuit-blueprint.svg" <<'SVG'
+<svg xmlns="http://www.w3.org/2000/svg" width="2560" height="1440" viewBox="0 0 2560 1440">
+<defs><linearGradient id="b" x2="1" y2="1"><stop stop-color="#0b1928"/><stop offset="1" stop-color="#10101a"/></linearGradient><pattern id="g" width="80" height="80" patternUnits="userSpaceOnUse"><path d="M80 0H0V80" fill="none" stroke="#54a8b5" stroke-opacity=".16" stroke-width="2"/></pattern><radialGradient id="r"><stop stop-color="#ff604b" stop-opacity=".35"/><stop offset="1" stop-color="#ff604b" stop-opacity="0"/></radialGradient></defs>
+<rect width="2560" height="1440" fill="url(#b)"/><rect width="2560" height="1440" fill="url(#g)"/><ellipse cx="1280" cy="700" rx="900" ry="600" fill="url(#r)"/>
+<g fill="none" stroke="#e95043" stroke-width="12" stroke-linejoin="round"><path d="M180 1080H480V900H760V720H1050V540H1450V720H1740V900H2070V1080H2380"/><path d="M480 900V1120H760V1260M1740 900V1120H2010V1260"/></g>
+<g fill="#ffad78"><rect x="455" y="875" width="50" height="50"/><rect x="735" y="695" width="50" height="50"/><rect x="1025" y="515" width="50" height="50"/><rect x="1425" y="695" width="50" height="50"/><rect x="1715" y="875" width="50" height="50"/></g>
+<g text-anchor="middle" font-family="DejaVu Sans Mono,monospace"><text x="1280" y="260" fill="#f5eee8" font-size="86" font-weight="bold" letter-spacing="12">REDSTONE OS</text><text x="1280" y="330" fill="#78c3c5" font-size="26" letter-spacing="12">SIGNAL. SYSTEM. SOLID.</text></g>
+</svg>
+SVG
+"$IM" "$OUT/redstone-circuit-blueprint.svg" -strip "$OUT/redstone-circuit-blueprint-2560x1440.png"
+
+cat > "$OUT/redstone-redstone-sunset.svg" <<'SVG'
+<svg xmlns="http://www.w3.org/2000/svg" width="2560" height="1440" viewBox="0 0 2560 1440">
+<defs><linearGradient id="s" x2="0" y2="1"><stop stop-color="#261b36"/><stop offset=".48" stop-color="#8b3e43"/><stop offset="1" stop-color="#171522"/></linearGradient><radialGradient id="sun"><stop stop-color="#ffbd79"/><stop offset="1" stop-color="#f15b45" stop-opacity="0"/></radialGradient></defs>
+<rect width="2560" height="1440" fill="url(#s)"/><circle cx="1280" cy="610" r="520" fill="url(#sun)"/>
+<g fill="#171b29"><path d="M0 930H320V780H510V930H760V1080H0Z"/><path d="M1740 900H1950V740H2140V900H2560V1120H1740Z"/></g>
+<path d="M0 1110H420V1000H720V890H980V1000H1300V1110H1640V1000H1940V1110H2560" fill="none" stroke="#ff684f" stroke-width="16" stroke-linejoin="miter"/>
+<g transform="translate(1280 640)"><path d="M0-220 205-105 0 10-205-105Z" fill="#ff9a6b"/><path d="M-205-105 0 10V235L-205 120Z" fill="#b74442"/><path d="M205-105 0 10V235L205 120Z" fill="#78313c"/><path d="M0-35 55-5V55L0 85-55 55V-5Z" fill="#ffcf91"/></g>
+<text x="1280" y="1300" text-anchor="middle" font-family="DejaVu Sans Mono,monospace" font-size="82" font-weight="bold" letter-spacing="12" fill="#fff1e6">REDSTONE OS</text>
+</svg>
+SVG
+"$IM" "$OUT/redstone-redstone-sunset.svg" -strip "$OUT/redstone-redstone-sunset-2560x1440.png"
+
+# A high-resolution ultrawide crop for 21:9 displays.
+"$IM" "$OUT/redstone-desktop-2560x1440.png" -resize '3440x1440^' -gravity center -extent 3440x1440 "$OUT/redstone-ultrawide-3440x1440.png"
 
 # Manim renders the animated intro from the same visual language.
 manim --renderer=cairo -ql --fps 30 -r 1920,1080 \
-  "$ROOT_DIR/scripts/redstone-intro.py" RedstoneBootIntro
-RENDERED="$(find "$ROOT_DIR/media/videos" -type f -name "RedstoneBootIntro.mp4" -print -quit)"
-if [[ -z "$RENDERED" || ! -s "$RENDERED" ]]; then
-  echo "Manim did not produce the expected intro video: $RENDERED" >&2
-  find "$ROOT_DIR/media/videos" -type f -name '*.mp4' -print >&2 || true
-  exit 1
-fi
-cp "$RENDERED" "$OUT/redstone-theme-intro-manim.mp4"
+  "$ROOT_DIR/scripts/redstone-intro.py" RedstoneBootIntro RedstonePulseIntro RedstoneOrbitIntro
+for SCENE in RedstoneBootIntro RedstonePulseIntro RedstoneOrbitIntro; do
+  RENDERED="$(find "$ROOT_DIR/media/videos" -type f -name "$SCENE.mp4" -print -quit)"
+  if [[ -z "$RENDERED" || ! -s "$RENDERED" ]]; then
+    echo "Manim did not produce the expected intro video for $SCENE" >&2
+    find "$ROOT_DIR/media/videos" -type f -name '*.mp4' -print >&2 || true
+    exit 1
+  fi
+  cp "$RENDERED" "$OUT/$SCENE.mp4"
+done
 
-rm -f "$OUT/redstone-desktop.svg" "$OUT/redstone-pixel-7a.svg"
+rm -f "$OUT/redstone-desktop.svg" "$OUT/redstone-pixel-7a.svg" "$OUT/redstone-circuit-blueprint.svg" "$OUT/redstone-redstone-sunset.svg"
 cat > "$OUT/README.txt" <<'TXT'
 Redstone OS Minecraft-inspired branding pack
 - redstone-desktop-2560x1440.png: pixel-art desktop wallpaper
@@ -109,5 +139,5 @@ Redstone OS Minecraft-inspired branding pack
 Generated by the standalone GitHub Actions branding workflow.
 TXT
 
-echo "Branding generated:"
+echo "Branding generated (wallpapers and three intros):"
 ls -lh "$OUT"
