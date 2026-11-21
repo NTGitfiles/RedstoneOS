@@ -29,7 +29,7 @@ bash scripts/build.sh
 REDSTONE_ARCH=aarch64 bash scripts/build.sh
 ```
 
-The build script generates the initial RedstoneOS dark theme and custom 2560x1440 wallpaper before invoking the upstream ISO builder. The theme includes an SVG source, PNG background and preview. A full ISO build has not yet been validated.
+The build script generates the initial RedstoneOS dark theme and desktop wallpaper before invoking the upstream ISO builder. The standalone branding workflow produces a collection of desktop, ultrawide and Pixel 7a wallpapers, plus three animated Manim intro variants. These are uploaded together as a GitHub Actions artifact. A full ISO build has not yet been validated.
 
 ## Project layout
 
