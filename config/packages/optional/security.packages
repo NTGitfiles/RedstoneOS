@@ -1,0 +1,9 @@
+veracrypt
+cryptsetup
+gnupg
+yubikey-manager
+libfido2
+firejail
+bubblewrap
+fail2ban
+lynis

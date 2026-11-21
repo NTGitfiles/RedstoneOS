@@ -1,0 +1,2 @@
+# ARM64-only compatibility layer candidate. Never include in x86_64 package groups.
+fex-emu

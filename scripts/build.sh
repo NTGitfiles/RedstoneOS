@@ -16,11 +16,18 @@ ISO_REF="${REDSTONE_ISO_REF:-d5136a69782c00fe8d53fc98e4f3a990447d4840}"
 die() { printf 'ERROR: %s\n' "$*" >&2; exit 1; }
 info() { printf '\n==> %s\n' "$*"; }
 
-for command in git bash ffmpeg; do
+for command in git bash ffmpeg python3; do
   command -v "$command" >/dev/null 2>&1 || die "Required command not found: $command"
 done
 
-[[ "$(uname -m)" == "x86_64" ]] || die "This initial build wrapper currently targets x86_64 hosts."
+REDSTONE_ARCH="${REDSTONE_ARCH:-x86_64}"
+case "$REDSTONE_ARCH" in
+  x86_64|aarch64) ;;
+  *) die "Unsupported REDSTONE_ARCH: $REDSTONE_ARCH (use x86_64 or aarch64)." ;;
+esac
+
+# Keep the repository checks fast and independent of the ISO builder.
+bash "$ROOT_DIR/scripts/verify.sh"
 mkdir -p "$SOURCE_DIR" "$OUTPUT_DIR"
 
 # Populate pinned upstream source gitlinks recorded in this repository.
@@ -229,7 +236,7 @@ ISO_BUILDER="$SOURCE_DIR/omarchy-iso/bin/omarchy-iso-make"
 info "Starting upstream ISO build with local Omarchy and package sources"
 (
   cd "$SOURCE_DIR/omarchy-iso"
-  NO_BOOT_OFFER=1 "$ISO_BUILDER" --keep-pkg-cache --local-source "$SOURCE_DIR/omarchy" "$SOURCE_DIR/omarchy-pkgs"
+  NO_BOOT_OFFER=1 "$ISO_BUILDER" --arch "$REDSTONE_ARCH" --keep-pkg-cache --local-source "$SOURCE_DIR/omarchy" "$SOURCE_DIR/omarchy-pkgs"
 )
 
 info "Build command completed. Check the upstream builder output for the generated ISO location."

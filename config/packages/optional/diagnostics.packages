@@ -1,0 +1,11 @@
+# Diagnostics and monitoring utilities
+nvtop
+inxi
+glances
+netdata
+bmon
+iperf3
+mtr
+strace
+gdb
+valgrind

@@ -1,0 +1,8 @@
+virt-viewer
+spice-vdagent
+libvirt
+edk2-ovmf
+swtpm
+qemu-guest-agent
+virtio-win
+virtualbox

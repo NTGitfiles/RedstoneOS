@@ -1,0 +1,4 @@
+# Recovery and package maintenance tools
+arch-install-scripts
+pacman-contrib
+reflector

@@ -18,8 +18,8 @@ selected = ["Neovim", "Git", "GitHub CLI", "Docker", "GCC", "Clang", "Python", "
 selected = ["LibreOffice", "Papers", "KDE Connect", "LocalSend", "Calibre", "GIMP", "Inkscape", "Kdenlive"]
 
 [system_utilities]
-selected = ["Mission Center", "btop", "Fastfetch", "CUPS", "fwupd", "Flatpak", "AppImage support", "Virtual Machine Manager", "QEMU", "KVM", "Ventoy"]
-unresolved = ["Herdr (user supplied name; identify exact project before packaging)"]
+selected = ["Mission Center", "btop", "Fastfetch", "CUPS", "fwupd", "Flatpak", "AppImage support", "Virtual Machine Manager", "QEMU", "KVM", "Ventoy", "Herdr"]
+notes = ["Herdr is already included in the pinned Omarchy 4.5 base package list."]
 
 [multimedia]
 selected = ["VLC", "MPV", "Audacity", "EasyEffects", "HandBrake", "FFmpeg", "yt-dlp", "Ardour", "Blender"]
