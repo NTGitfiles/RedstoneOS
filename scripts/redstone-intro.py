@@ -105,3 +105,62 @@ class RedstoneBootIntro(Scene):
         self.play(Write(title), run_time=0.75)
         self.play(FadeIn(tagline, shift=UP * 0.12), Create(underline), run_time=0.45)
         self.wait(0.9)
+
+
+class RedstonePulseIntro(Scene):
+    """A fast boot sting: the circuit charges, then the Redstone mark ignites."""
+    def construct(self):
+        grid = VGroup(*[
+            Line([x, -4, 0], [x, 4, 0], color="#26313b", stroke_opacity=0.25)
+            for x in np.arange(-8, 8.1, 0.8)
+        ])
+        self.add(grid)
+        points = [(-7, -1.2, 0), (-4, -1.2, 0), (-4, 0.4, 0),
+                  (-1.5, 0.4, 0), (-1.5, 1.7, 0), (1.5, 1.7, 0),
+                  (1.5, 0.4, 0), (4, 0.4, 0), (4, -1.2, 0), (7, -1.2, 0)]
+        path = VMobject(color="#e34b3f", stroke_width=9)
+        path.set_points_as_corners([np.array(p) for p in points])
+        self.play(Create(path), run_time=1.0)
+        pulse = Dot(points[0], color="#ffc16b", radius=0.16)
+        self.add(pulse)
+        self.play(MoveAlongPath(pulse, path), run_time=1.25, rate_func=linear)
+        flash = Square(1.2, fill_color="#ff553e", fill_opacity=1, stroke_color="#ffd0a0")
+        self.play(FadeIn(flash, scale=0.2), run_time=0.2)
+        title = Text("REDSTONE OS", font="DejaVu Sans Mono", weight=BOLD,
+                     color="#f5eee8", font_size=54)
+        sub = Text("POWERED BY REDSTONE", font="DejaVu Sans Mono",
+                   color="#ff8967", font_size=18)
+        title.move_to(DOWN * 2.3)
+        sub.next_to(title, DOWN, buff=0.25)
+        self.play(FadeOut(flash), Write(title), FadeIn(sub), run_time=0.8)
+        self.wait(0.7)
+
+
+class RedstoneOrbitIntro(Scene):
+    """A calmer cinematic reveal with orbiting redstone nodes."""
+    def construct(self):
+        self.camera.background_color = "#090d12"
+        ring = Circle(radius=2.0, color="#713039", stroke_width=5)
+        inner = Circle(radius=1.35, color="#293b46", stroke_width=2)
+        core = Square(1.25, fill_color="#a83b35", fill_opacity=1,
+                      stroke_color="#ffad78", stroke_width=4)
+        core.rotate(PI / 4)
+        nodes = VGroup(*[
+            Dot(ring.point_at_angle(a), radius=0.13, color="#ff684f")
+            for a in np.linspace(0, TAU, 8, endpoint=False)
+        ])
+        self.play(Create(ring), Create(inner), FadeIn(core), run_time=0.9)
+        self.play(FadeIn(nodes, lag_ratio=0.08), run_time=0.45)
+        self.play(Rotate(nodes, angle=TAU, about_point=ORIGIN),
+                  Rotate(ring, angle=-PI / 8), run_time=2.0, rate_func=linear)
+        glow = Circle(radius=0.75, color="#ff9a6b", stroke_width=12)
+        glow.move_to(ORIGIN)
+        self.play(FadeIn(glow), core.animate.set_fill("#f15b45"), run_time=0.4)
+        title = Text("REDSTONE OS", font="DejaVu Sans Mono", weight=BOLD,
+                     color="#f5eee8", font_size=52)
+        subtitle = Text("A SYSTEM WITH A SIGNAL", font="DejaVu Sans Mono",
+                        color="#ff8967", font_size=17)
+        title.move_to(DOWN * 2.8)
+        subtitle.next_to(title, DOWN, buff=0.22)
+        self.play(Write(title), FadeIn(subtitle), run_time=0.8)
+        self.wait(0.9)
