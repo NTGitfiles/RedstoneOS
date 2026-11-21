@@ -5,6 +5,7 @@ on:
   push:
     branches:
       - redstone/bootstrap
+      - build-20/package-integration
     paths:
       - "scripts/generate-branding-assets.sh"
       - "scripts/redstone-intro.py"
@@ -19,7 +20,7 @@ concurrency:
 
 jobs:
   generate-branding:
-    name: Generate wallpapers and Manim intro
+    name: Generate wallpaper collection and animated intros
     runs-on: ubuntu-latest
     timeout-minutes: 25
     steps:
